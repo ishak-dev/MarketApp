@@ -1,3 +1,5 @@
+#This file is used to make from directory package where other modules can import data
+
 from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
 
