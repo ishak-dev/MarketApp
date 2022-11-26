@@ -32,6 +32,10 @@ class User(db.Model,UserMixin):
 
     def check_password_correction(self, attempted_password):
         return bcrypt.check_password_hash(self.password_hash,attempted_password)
+
+    def can_purchase(self, item_obj):
+        return self.budget >= item_obj.price
+
             
 
 class Item(db.Model):
@@ -43,5 +47,11 @@ class Item(db.Model):
     owner = db.Column(db.Integer(),db.ForeignKey('user.id'))
     def __repr__(self): # a special method for representing the objects in a class as a string
         return f'Item {self.name}'
+
+    def assign_item(self,user_obj):
+        self.owner = user_obj.id
+        user_obj.budget -= self.price
+        db.session.commit()
+     
 
 
